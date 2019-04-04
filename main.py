@@ -2,12 +2,9 @@ import sys
 
 def main():
     testCaseCount = int(sys.stdin.readline())
-    for x in range(1, testCaseCount):
-        nAndK = readIntArray()
-        k = nAndK[1]
+    for x in range(0, testCaseCount):
         numArray = readIntArray()
-        largestNumbers = findLargestElements(numArray, k)
-        printArray(largestNumbers)
+        printArray(doIt(numArray))
 
 def readIntArray():
     stringInputArray = sys.stdin.readline().split()
@@ -18,7 +15,7 @@ def printArray(anArray):
         print(elem, end =" ") 
     print()
 
-def findLargestElements(numArray, numOfElemesToFind):
+def doIt(numArray):
     # TODO add implementation
     return numArray
 
