@@ -1,5 +1,4 @@
 import sys
-import collections
 
 # A solution to Geeks for Geeks "k largest(or smallest) elements in an array"
 # https://practice.geeksforgeeks.org/problems/k-largest-elements/0
@@ -11,7 +10,7 @@ def main():
         nAndK = readIntArray()
         k = nAndK[1]
         numArray = readIntArray()
-        largestNumbers = findLargestElements(numArray, k)
+        largestNumbers = bubbleSortDescending(numArray, k)
         printArray(largestNumbers, k)
 
 def readIntArray():
@@ -27,54 +26,27 @@ def printArray(anArray, maxLen):
         i = i+1
     print()
 
-def findLargestElements(numArray, numOfElementsToFind):
-    q = collections.deque()
+def bubbleLargerToTheLeft(numArray, arrayLen, stopIndex):
     
-    qLen = 0
-    smallest = sys.maxsize
+    i = arrayLen-1
 
-    for num in numArray:
-        if qLen == 0:
-            # result collection is blank
-            q.append(num)
-            smallest = num
-            qLen = qLen+1
-            continue
-        if num > q[0]:
-            # num larger than largest - insert to the head
-            q.insert(0, num)
-            qLen = qLen+1
-            continue
-        if num < smallest:
-            if qLen < numOfElementsToFind:
-                # num is smaller than smallest, and result collection 
-                # is not yet filled fully - insert to right
-                q.append(num)
-                smallest = num
-                qLen = qLen+1
-            continue
-        
-        index = binarySearch(q, 0, qLen-1, num)
-        q.insert(index, num)
-        qLen = qLen+1
+    while i > stopIndex:
+        right = numArray[i]
+        left = numArray[i-1]
+        if right > left:
+            numArray[i-1] = right
+            numArray[i] = left
+        i = i-1
 
-    return q
+def bubbleSortDescending(numArray, limit):
 
-def binarySearch(collection, left, right, number):
-    if left == right:
-        return left
+    arrayLen = len(numArray)
+    count = 0
     
-    if left+1 == right:
-        if number < collection[left]:
-            return right
-        else:
-            return left
+    while count < limit:
+        bubbleLargerToTheLeft(numArray, arrayLen, count)
+        count = count + 1
 
-    middle = (left + right) >> 1
-    if number < collection[middle]:
-        return binarySearch(collection, middle, right, number)
-    if number > collection[middle]:
-        return binarySearch(collection, left, middle, number)
-    return middle
+    return numArray
 
 main()
